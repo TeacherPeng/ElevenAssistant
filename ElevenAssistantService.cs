@@ -28,19 +28,19 @@ public class ElevenAssistantV2Service : AccessibilityService
     private bool _adverOnly = false;
 
     public static TimeOnly[] ScheduledTimes = [
-        TimeOnly.Parse("9:20"),
-        TimeOnly.Parse("11:20"),
-        TimeOnly.Parse("13:20"),
-        TimeOnly.Parse("15:20"),
-        TimeOnly.Parse("17:20"),
+        TimeOnly.Parse("10:00"),
+        TimeOnly.Parse("12:00"),
+        TimeOnly.Parse("14:00"),
+        TimeOnly.Parse("16:00"),
+        TimeOnly.Parse("18:00"),
     ];
     private DateTime _nextClockInTime = DateTime.MaxValue;
 
     // 屏幕检测参数
-    private const int CheckX = 956;
-    private const int CheckY = 718;
+    private const int CheckX = 1111;
+    private const int CheckY = 812;
     private static readonly int GoldColor = Android.Graphics.Color.ParseColor("#FFC641");
-    private static readonly int RedColor = Android.Graphics.Color.ParseColor("#FF3F54");
+    private static readonly int RedColor = Android.Graphics.Color.ParseColor("#EA4555");
     private const int ColorThreshold = 60; // 判断“接近”的阈值（RGB欧氏距离）
 
     public override void OnCreate()
@@ -50,9 +50,16 @@ public class ElevenAssistantV2Service : AccessibilityService
         _handler = new Handler(Looper.MainLooper);
         _actionRunnable = new Runnable(async () =>
         {
-            if (_isActing)
+            try
             {
-                await PerformActionAsync();
+                if (_isActing)
+                {
+                    await PerformActionAsync();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Android.Util.Log.Error("Eleven Assistant", "ActionRunnable exception: " + ex.Message);
             }
         });
 
@@ -326,23 +333,24 @@ public class ElevenAssistantV2Service : AccessibilityService
             if (_enableSwipeCoin)
             {
                 bool isTarget = await PixelColorIsTarget(RedColor);
-
+                long nextDelay = 1000;
+                
                 if (isTarget)
                 {
                     Android.Util.Log.Debug("Elevent Assistant", "Pixel is target color, performing swipe");
-                    Swipe();
+                    _monitor_time = DateTime.Now;
+                    nextDelay = Swipe();
                 }
                 else
                 {
                     Android.Util.Log.Debug("Elevent Assistant", "Pixel is not target color, counting...");
-                    if (DateTime.Now - _monitor_time > TimeSpan.FromSeconds(30))
+                    if (DateTime.Now - _monitor_time > TimeSpan.FromSeconds(45))
                     {
                         Android.Util.Log.Debug("Elevent Assistant", "Pixel has been not target color for too long, performing swipe");
                         _monitor_time = DateTime.Now;
-                        Swipe();
+                        nextDelay = Swipe();
                     }
                 }
-                var nextDelay = _random.Next(_minDelay, _maxDelay);
                 _handler?.PostDelayed(_actionRunnable, nextDelay);
                 return;
             }
