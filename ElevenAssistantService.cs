@@ -87,15 +87,30 @@ public class ElevenAssistantV2Service : AccessibilityService
     {
         var gestureBuilder = new GestureDescription.Builder();
 
-        // 在指定范围内随机生成手势的起点和终点坐标
-        int startX = _random.Next(450, 551);
-        int startY = _random.Next(1500, 1601);
-        int endX = _random.Next(450, 551);
-        int endY = _random.Next(800, 1000);
+        // 依据实际屏幕分辨率按相对位置计算手势起点和终点（基准分辨率：1080x2400）
+        var metrics = Resources.DisplayMetrics;
+        int realW = metrics.WidthPixels;
+        int realH = metrics.HeightPixels;
+        const float baseW = 1080f;
+        const float baseH = 2400f;
+
+        float sxMin = 450f / baseW * realW;
+        float sxMax = 550f / baseW * realW;
+        float syMin = 1500f / baseH * realH;
+        float syMax = 1600f / baseH * realH;
+        float exMin = 450f / baseW * realW;
+        float exMax = 550f / baseW * realW;
+        float eyMin = 800f / baseH * realH;
+        float eyMax = 1000f / baseH * realH;
+
+        float startXf = (float)_random.NextDouble() * (sxMax - sxMin) + sxMin;
+        float startYf = (float)_random.NextDouble() * (syMax - syMin) + syMin;
+        float endXf = (float)_random.NextDouble() * (exMax - exMin) + exMin;
+        float endYf = (float)_random.NextDouble() * (eyMax - eyMin) + eyMin;
 
         // 生成手势轨迹
         var path = new Android.Graphics.Path();
-        path.MoveTo(startX, startY);
+        path.MoveTo(startXf, startYf);
 
         int steps = _random.Next(18, 32);
         double freq = _random.NextDouble() * 2.0 + 2.0;
@@ -106,8 +121,8 @@ public class ElevenAssistantV2Service : AccessibilityService
             float t = (float)i / steps; // 0..1
 
             // linear interpolation between start and end
-            float baseX = startX + (endX - startX) * t;
-            float baseY = startY + (endY - startY) * t;
+            float baseX = startXf + (endXf - startXf) * t;
+            float baseY = startYf + (endYf - startYf) * t;
 
             // sine wave on X to simulate tremor, plus small random noise on both axes
             double sine = System.Math.Sin(t * freq * 2.0 * System.Math.PI);
