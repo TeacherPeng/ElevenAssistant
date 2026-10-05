@@ -48,12 +48,12 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="5000"
+                android:text="10000"
                 android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 预设按钮：默认 2000-10000、长延时 5000-30000、短区间 4000-5000 -->
+    <!-- 预设按钮：默认 4000-20000、长延时 10000-30000、短区间 2000-5000 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,39 +80,6 @@
             android:text="2s~5s" />     
     </LinearLayout>
 
-    <!-- 新增控制开关（横向排列） -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"    
-        android:layout_marginTop="12dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:gravity="center_vertical">
-        <CheckBox
-            android:id="@+id/chkEnableSwipe"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Coins"
-            android:checked="true" />
-        <CheckBox
-            android:id="@+id/chkEnableSchedule"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="ClockIn"
-            android:checked="false" />
-        <!-- 新增 AdverOnly 选项 -->
-        <CheckBox
-            android:id="@+id/chkAdverOnly"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="AdverOnly"
-            android:checked="false" />
-    </LinearLayout>
-
     <Button
         android:id="@+id/cmdStart"
         android:text="@string/service_start"
@@ -124,32 +91,4 @@
         android:text="@string/service_stop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="12dp"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/txtScheduledTime1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/txtScheduledTime2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/txtScheduledTime3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/txtScheduledTime4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/txtScheduledTime5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 </LinearLayout>
