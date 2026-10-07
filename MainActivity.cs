@@ -36,23 +36,6 @@ public class MainActivity : Activity
         var _btnPreset3 = FindViewById<Button>(Resource.Id.cmdPreset3);
         var _editMinDelay = FindViewById<EditText>(Resource.Id.editMinDelay);
         var _editMaxDelay = FindViewById<EditText>(Resource.Id.editMaxDelay);
-        var _chkEnableSwipe = FindViewById<CheckBox>(Resource.Id.chkEnableSwipe);
-        var _chkEnableSchedule = FindViewById<CheckBox>(Resource.Id.chkEnableSchedule);
-        var _chkAdverOnly = FindViewById<CheckBox>(Resource.Id.chkAdverOnly);
-
-        int[] scheduledTimeViewIds =
-        [
-            Resource.Id.txtScheduledTime1,
-            Resource.Id.txtScheduledTime2,
-            Resource.Id.txtScheduledTime3,
-            Resource.Id.txtScheduledTime4,
-            Resource.Id.txtScheduledTime5,
-        ];
-        for (int i = 0; i < ElevenAssistantV2Service.ScheduledTimes.Length && i < scheduledTimeViewIds.Length; i++)
-        {
-            FindViewById<TextView>(scheduledTimeViewIds[i])!.Text =
-                ElevenAssistantV2Service.ScheduledTimes[i].ToString("HH:mm");
-        }
 
         // 预设按钮：设置编辑框的值
         _btnPreset1?.Click += (s, e) =>
@@ -91,31 +74,24 @@ public class MainActivity : Activity
             // 提示用户开启无障碍服务（可选）
             if (!CheckAccessibilityPermission()) return;
 
-            bool enableSwipe = _chkEnableSwipe?.Checked ?? true;
-            bool enableSchedule = _chkEnableSchedule?.Checked ?? true;
-            bool adverOnly = _chkAdverOnly?.Checked ?? false;
-
-            CallService(PackageInfo.ActionStart, "开始", minDelay, maxDelay, enableSwipe, enableSchedule, adverOnly);
+            CallService(PackageInfo.ActionStart, "开始", minDelay, maxDelay);
             LaunchApp("com.ss.android.ugc.aweme.lite");
         };
 
         _btnStop?.Click += (s, e) =>
         {
             // 停止时把所有开关设置为 false（服务收到停止广播后会停止动作）
-            CallService(PackageInfo.ActionStop, "停止", 0, 0, false, false, false);
+            CallService(PackageInfo.ActionStop, "停止", 0, 0);
         };
 
     }
 
-    private void CallService(string action, string tooltip, int minDelay, int maxDelay, bool enableSwipe, bool enableSchedule, bool adverOnly)
+    private void CallService(string action, string tooltip, int minDelay, int maxDelay)
     {
         var intent = new Intent(action);
         intent.SetPackage(PackageName);
         intent.PutExtra(PackageInfo.ExtraMinDelay, minDelay);
         intent.PutExtra(PackageInfo.ExtraMaxDelay, maxDelay);
-        intent.PutExtra(PackageInfo.ExtraEnableSwipe, enableSwipe);
-        intent.PutExtra(PackageInfo.ExtraEnableSchedule, enableSchedule);
-        intent.PutExtra(PackageInfo.ExtraAdverOnly, adverOnly);
         SendBroadcast(intent);
         Toast.MakeText(this, tooltip, ToastLength.Short)?.Show();
     }
