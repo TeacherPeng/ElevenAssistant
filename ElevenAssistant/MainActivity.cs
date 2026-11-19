@@ -4,7 +4,7 @@ using Android.OS;
 using Android.Provider;
 using Android.Widget;
 
-namespace ElevenAssistantV2;
+namespace ElevenAssistant;
 
 public static class PackageInfo
 {

@@ -7,3 +7,5 @@
 * SwipeOnly分支是单纯的自动划屏功能。
 
 * main分支目前与SwipeOnly分支相同。
+
+* AndroidTarget项目用于测试和演示自动划屏功能。

@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/解决方案项/">
+    <File Path="auto-action.ps1" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="AndroidTarget/AndroidTarget.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="ElevenAssistant\ElevenAssistant.csproj">
+    <Deploy />
+  </Project>
+</Solution>

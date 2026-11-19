@@ -7,7 +7,7 @@ using Android.Views;
 using Android.Views.Accessibility;
 using Java.Lang;
 
-namespace ElevenAssistantV2;
+namespace ElevenAssistant;
 
 [Service(Name = PackageInfo.ServiceName, Permission = "android.permission.BIND_ACCESSIBILITY_SERVICE", Exported = true)]
 [IntentFilter(["android.accessibilityservice.AccessibilityService"])]
